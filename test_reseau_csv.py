@@ -23,15 +23,10 @@ args = vars(ap.parse_args())
 
 """
 
+
+
 # load the image
 
-"""
-penser à générer une base de validation avec 2 types de  blocs aléatoire
-1 nbrs de 150 à 1000
-1 nbrs de 0 à 100
-ATTENTION les blocs de 0 à 100 doivent contenir au minimun 60 lignes
-"""
-MonCSV=np.genfromtxt(".\\validation\\11.csv", delimiter=',')
 #image = cv2.imread("D:\\hackatonSopra2018\\testML\\image-classification-keras\\imagesMais\\MaisNonPret\\00000001.jpg")#args["image"]
 #orig = image.copy()
 
@@ -39,30 +34,34 @@ MonCSV=np.genfromtxt(".\\validation\\11.csv", delimiter=',')
 
 
 # load the trained convolutional neural network
-print("[INFO] loading network...")
-model = load_model(".\ModeleCSV.model")#args["model"]
-
-CheminCSV=sorted(list(paths.list_files(".\\validation",".csv") ) )
-
-for CsvCour in CheminCSV:
+def TestReseau(CheminCSV,EPOCHS,BS,INIT_LR,WIDTH, HEIGHT):
+    #print("[INFO] loading network...")
+    model = load_model(".\ModeleCSV.model")#args["model"]
     
-    MonCSV=np.genfromtxt(CsvCour, delimiter=',')
-    image = cv2.resize(MonCSV, (28, 28))
-    image = image.astype("float") / 255.0
-    image = img_to_array(image)
-    image = np.expand_dims(image, axis=0)
-
-    # classify the input image
-    (autre, leve) = model.predict(image)[0]
-
-    # build the label
-    label = "levé_de_benne" if leve > autre else "autre1"
-    proba = leve if leve > autre else autre
-    label = "{}: {:.2f}%".format(label, proba * 100)
+    CheminFichier=".\\Resultat_Apprentissage\\"+"Test_nbrsEntraiment_"+str(EPOCHS)+"_groupe_"+str(BS)+"_pourcentageAppInit_"+str(INIT_LR)+".txt"
     
-    
-    print("nom du csv :"+CsvCour+" "+label)
+    fichier=open(CheminFichier,"a")
 
+    for CsvCour in CheminCSV:
+        
+        MonCSV=np.genfromtxt(CsvCour, delimiter=';')
+        image = cv2.resize(MonCSV, (WIDTH, HEIGHT))
+        image = image.astype("float") / 2300
+        image = img_to_array(image)
+        image = np.expand_dims(image, axis=0)
+    
+        # classify the input image
+        (autre, leve) = model.predict(image)[0]
+    
+        # build the label
+        label = "levé_de_benne" if leve > autre else "autre"
+        proba = leve if leve > autre else autre
+        label = "{}: {:.2f}%".format(label, proba * 100)
+        
+        fichier.write("nom du csv :"+CsvCour+" "+label+"\n")
+        #print("nom du csv :"+CsvCour+" "+label)
+    
+    fichier.close()
 # draw the label on the image
 #output = imutils.resize(orig, width=400) ne sert à rien pour un fichier csv
 #output = cv2.imread(".\logo_exotic.jpg")
@@ -73,5 +72,5 @@ for CsvCour in CheminCSV:
 #cv2.imshow("Output", output)
 #cv2.waitKey(0)
 
-print ("coucou")
+
 
