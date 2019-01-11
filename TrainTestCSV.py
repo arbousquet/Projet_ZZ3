@@ -15,8 +15,8 @@ from imutils import paths
 MAX_EPOCHS = 70
 MIN_EPOCHS = 5
 #nbrs d'exemples par itération
-MAX_BS = 30
-MIN_BS = 1
+MAX_BS = 20
+MIN_BS = 5
 
 #% apprentissage initial
 INIT_LR = 1e-3
@@ -29,8 +29,8 @@ HEIGHT=600
 CheminEntrainementCSV=sorted(list(paths.list_files(".\Data",".csv") ) )
 CheminTestCSV=sorted(list(paths.list_files(".\\Validation",".csv") ) )
 
-for epochs in range (MIN_EPOCHS,MAX_EPOCHS):
-    for BatchSize in range (MIN_BS,MAX_BS):
+for epochs in range (MIN_EPOCHS,MAX_EPOCHS,5):
+    for BatchSize in range (MIN_BS,MAX_BS,5):
         print(" Début de l'entrainement/test/validation  avec les params : Epochs="+str(epochs)+" Batch size="+str(BatchSize))
         #entrainer le réseau avec les params d'epochs et de batch courant
         EntrainementReseau(CheminEntrainementCSV,epochs,BatchSize,INIT_LR,WIDTH,HEIGHT)

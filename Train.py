@@ -125,4 +125,4 @@ def EntrainementReseau(CheminCSV,EPOCHS,BS,INIT_LR,WIDTH,HEIGHT):
     
     CheminFichier=".\\Resultat_Apprentissage\\"+"Apprentissage_nbrsEntraiment_"+str(EPOCHS)+"_groupe_"+str(BS)+"_pourcentageAppInit_"+str(INIT_LR)+".png"
     plt.savefig(CheminFichier)
-
+    plt.close()
