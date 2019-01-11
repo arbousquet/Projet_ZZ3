@@ -41,7 +41,7 @@ import os
 
 EPOCHS = 50
 INIT_LR = 1e-3
-BS = 32
+BS = 2
 WIDTH=3
 HEIGHT=600
 
